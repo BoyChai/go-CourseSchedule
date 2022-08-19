@@ -11,7 +11,6 @@ func CreateWorksheet(f *excelize.File, weeks int) {
 	// 创建一个工作表
 	for i := 1; i <= weeks; i++ {
 		f.NewSheet(fmt.Sprint("week", i))
-		fmt.Println(i)
 		// 设置单元格的值
 		f.SetCellValue(fmt.Sprint("week", i), "A1", "节次/星期")
 		for index := 1; index <= 13; index++ {

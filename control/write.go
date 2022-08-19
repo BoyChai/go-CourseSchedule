@@ -10,7 +10,7 @@ import (
 	"strings"
 )
 
-func CourseClassification(f *excelize.File, allCell []string) {
+func CourseClassification(f *excelize.File, allCell []string, ty string) {
 	for index, value := range allCell {
 		var CourseInfo config.CourseInformation
 		// 判断课程规范语句
@@ -83,29 +83,33 @@ func CourseClassification(f *excelize.File, allCell []string) {
 			//	fmt.Println(err)
 			//}
 			//fmt.Println(string(jsonStr))
-			write(f, CourseInfo)
+			write(f, CourseInfo, ty)
 		}
 	}
 
 }
 
-func write(f *excelize.File, CourseInfo config.CourseInformation) {
-	var c = config.CurriculumInfo{
-		ID:       CourseInfo.ID,
-		Name:     CourseInfo.Name,
-		Position: CourseInfo.Position,
-	}
-	jsonStr, err := json.Marshal(c)
-	if err != nil {
-		fmt.Println(err)
-	}
+func write(f *excelize.File, CourseInfo config.CourseInformation, ty string) {
 	for _, sheet := range CourseInfo.Week {
-		for _, class := range CourseInfo.Class {
+		for index, class := range CourseInfo.Class {
+			var c = config.CurriculumInfo{
+				ID:       CourseInfo.ID,
+				Name:     CourseInfo.Name,
+				Position: CourseInfo.Position,
+				Class:    CourseInfo.Class[index],
+			}
+			jsonStr, err := json.Marshal(c)
+			if err != nil {
+				fmt.Println(err)
+			}
 			axis := fmt.Sprint(config.WeekPosition2[CourseInfo.DayWeek-1], class+1)
 			//value := fmt.Sprint()
-			f.SetCellValue(fmt.Sprint("week", sheet), axis, jsonStr)
+			if ty != "gin" {
+				f.SetCellValue(fmt.Sprint("week", sheet), axis, fmt.Sprint(CourseInfo.Name, "\n", CourseInfo.Position))
+			} else {
+				f.SetCellValue(fmt.Sprint("week", sheet), axis, jsonStr)
+			}
 			f.Save()
 		}
-
 	}
 }
