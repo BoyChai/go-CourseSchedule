@@ -51,7 +51,7 @@ type Request struct {
 //	"19:20-20:05",
 //	"20:10-20:55",
 //}
-
+var Port string
 var FileName string
 var WeekPosition1 []string
 var WeekPosition2 []string

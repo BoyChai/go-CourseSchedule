@@ -1,8 +1,10 @@
 package main
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"go-CourseSchedule/api"
+	"go-CourseSchedule/config"
 )
 
 func main() {
@@ -11,5 +13,8 @@ func main() {
 	//获取当前课程
 	r.GET("/getTodayCurriculum", api.GetTodayCurriculum)
 	r.GET("/getNextClass", api.GetNextClass)
-	r.Run()
+	err := r.Run(config.Port)
+	if err != nil {
+		fmt.Println(err)
+	}
 }

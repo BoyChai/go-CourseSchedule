@@ -15,6 +15,7 @@ func ReadConfig() {
 	if err != nil {
 		fmt.Println(err)
 	}
+	Port = v.GetString("default.Port")
 	FileName = v.GetString("default.FileName")
 	Sheet = v.GetString("default.Sheet")
 	WeekPosition1 = strings.Split(v.GetString("default.WeekPosition1"), ",")
